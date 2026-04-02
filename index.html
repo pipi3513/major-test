@@ -48,25 +48,22 @@
   .btn { width: 100%; padding: 18px; border: none; border-radius: var(--radius); font-size: 17px; font-weight: 700; font-family: 'Jua', sans-serif; cursor: pointer; background: linear-gradient(135deg, var(--primary) 0%, #6b8ff5 100%); color: #fff; box-shadow: 0 6px 24px rgba(61,110,232,0.2); transition: transform 0.15s; }
   .btn:active { transform: translateY(2px); }
 
-  /* 결과창 스타일 */
   .result { display: none; }
   .result.show { display: block; animation: popIn 0.5s both; }
   .result-card { background: var(--white); border-radius: var(--radius); border: 1.5px solid var(--border); box-shadow: 0 8px 40px rgba(61,110,232,0.12); margin-bottom: 20px; overflow: hidden; }
-  .result-header { padding: 30px; text-align: center; border-bottom: 1.5px solid var(--border); }
+  .result-header { padding: 30px; text-align: center; border-bottom: 1.5px solid var(--border); background: #f8faff; }
   .result-emoji { font-size: 50px; display: block; margin-bottom: 10px; }
   .result-name { font-family: 'Jua', sans-serif; font-size: 26px; color: var(--primary); }
   .result-body { padding: 25px; }
   
-  /* 정보 입력 폼 */
   .info-form { background: #f8faff; border-radius: 15px; padding: 20px; margin-top: 20px; border: 1px dashed var(--primary); }
   .info-form-title { font-family: 'Jua', sans-serif; color: var(--primary); margin-bottom: 15px; text-align: center; font-size: 18px; }
   .info-input-group { margin-bottom: 10px; }
-  .info-input-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; margin-left: 4px; }
+  .info-input-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
 
-  /* 하단 링크 버튼 */
   .link-group { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
   .link-btn { display: block; text-align: center; padding: 14px; border-radius: 12px; background: var(--white); border: 1.5px solid var(--primary); color: var(--primary); text-decoration: none; font-size: 14px; font-weight: 700; transition: all 0.2s; }
-  .link-btn:hover { background: var(--primary); color: #white; }
+  .link-btn:hover { background: var(--primary-light); }
 
   @keyframes fadeDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -87,9 +84,11 @@
   <div id="formSection">
     <div class="card">
       <div class="card-label"><div class="card-num">0</div><div class="card-title">현재 학년</div></div>
-      <select id="grade"><option value="">— 학년을 선택하세요 —</option><option>1학년</option><option>2학년</option><option>3학년</option><option>4학년 이상</option></select>
+      <select id="grade">
+        <option value="">— 학년을 선택하세요 —</option>
+        <option>1학년</option><option>2학년</option><option>3학년</option><option>4학년 이상</option>
+      </select>
     </div>
-
     <div class="card">
       <div class="card-label"><div class="card-num">1</div><div class="card-title">첫 번째 관심 전공</div></div>
       <select id="sel1"><option value="">— 전공을 선택하세요 —</option></select>
@@ -102,7 +101,6 @@
       <div class="card-label"><div class="card-num">3</div><div class="card-title">세 번째 관심 전공</div></div>
       <select id="sel3"><option value="">— 전공을 선택하세요 —</option></select>
     </div>
-
     <button class="btn" onclick="calculate()">✨ 내 설계전공 결과 보기</button>
   </div>
 
@@ -110,50 +108,38 @@
     <div id="captureArea">
       <div class="result-card">
         <div id="resultContent"></div>
-        
         <div class="info-form">
           <div class="info-form-title">🎁 커피 기프티콘 이벤트 참여</div>
-          <div class="info-input-group">
-            <label>이름</label><input type="text" id="userName" placeholder="성함을 입력해주세요">
-          </div>
-          <div class="info-input-group">
-            <label>학번</label><input type="text" id="userId" placeholder="학번 8자리를 입력해주세요">
-          </div>
-          <div class="info-input-group">
-            <label>소속학과</label><input type="text" id="userDept" placeholder="현재 소속 학과를 입력해주세요">
-          </div>
-          <p style="font-size: 10px; color: #999; margin-top: 10px; text-align: center;">* 입력하신 정보는 추첨 및 본인 확인용으로만 사용됩니다.</p>
+          <div class="info-input-group"><label>이름</label><input type="text" id="userName" placeholder="성함"></div>
+          <div class="info-input-group"><label>학번</label><input type="text" id="userId" placeholder="학번 8자리"></div>
+          <div class="info-input-group"><label>소속학과</label><input type="text" id="userDept" placeholder="현재 전공 학과"></div>
         </div>
       </div>
     </div>
-
     <button class="btn" onclick="saveAsImage()">📸 결과 이미지 저장 (이벤트 응모)</button>
-
     <div class="link-group">
-      <a href="https://공지사항링크주소.com" target="_blank" class="link-btn">📢 학생설계전공 신청안내 공지 바로가기</a>
-      <a href="https://제도소개링크주소.com" target="_blank" class="link-btn">📖 학생설계전공 제도 자세히 알아보기</a>
+      <a href="#" target="_blank" class="link-btn">📢 학생설계전공 신청안내 공지 바로가기</a>
+      <a href="#" target="_blank" class="link-btn">📖 학생설계전공 제도 자세히 알아보기</a>
     </div>
-    
-    <button style="width:100%; background:none; border:none; color:#aaa; margin-top:20px; cursor:pointer;" onclick="location.reload()">🔄 다시 테스트하기</button>
+    <button style="width:100%; background:none; border:none; color:#aaa; margin-top:20px; cursor:pointer;" onclick="location.reload()">🔄 다시 하기</button>
   </div>
 </div>
 
 <script>
-// 학과 리스트 (필요시 추가/수정 가능)
 const departments = ["AI의공학과","경영학과","경제학과","공간디자인·소비자학과","국사학과","국어국문학과","국제학부","데이터사이언스학과","물리학과","미디어기술콘텐츠학과","바이오로직스공학부","바이오메디컬소프트웨어학과","바이오메디컬화학공학과","법학과","사회복지학과","사회학과","생명공학과","수학과","식품영양학과","심리학과","아동학과","에너지환경공학과","영어영문학부","음악과","의류학과","의생명과학과","인공지능학과","일어일본문화학과","정보통신전자공학부","중국언어문화학과","철학과","컴퓨터정보공학부","특수교육과","프랑스어문화학과","행정학과","화학과","회계학과"];
 
+// 매칭 데이터 (전공 학과가 3개인 경우와 4개인 경우 비교 로직 적용)
 const majors = [
-  {name:"뇌인지공학",depts:["바이오메디컬소프트웨어학과","심리학과","의생명과학과"],emoji:"🧠",desc:"뇌와 마음, 기술의 교차점에 서 있는 당신! 인간의 마음을 과학적으로 풀어내는 융합 전문가로 성장해보세요."},
-  {name:"디지털콘텐츠마케팅학",depts:["경영학과","공간디자인·소비자학과","미디어기술콘텐츠학과"],emoji:"📱",desc:"콘텐츠로 소비자 마음을 사로잡는 당신! 마케팅과 디지털 콘텐츠를 융합한 실전형 인재에 딱입니다."},
-  {name:"ESG경영법학",depts:["경영학과","법학과","회계학과"],emoji:"🌿",desc:"지속가능한 미래를 법과 경영으로 설계하는 당신! ESG 시대의 핵심 리더가 될 준비가 되셨나요?"},
-  {name:"의류인공지능학",depts:["의류학과","인공지능학과","컴퓨터정보공학부"],emoji:"👗",desc:"패션과 테크의 만남! AI를 활용해 미래의 패션 산업을 혁신하는 창의적인 인재로 거듭나세요."}
-  // ... 추가 매칭 데이터는 이곳에 더 넣을 수 있습니다.
+  {name:"게임기획경영학", depts:["경영학과","경제학과","미디어기술콘텐츠학과","컴퓨터정보공학부"], emoji:"🕹️", desc:"게임을 기획하고 비즈니스로 연결하는 융합 인재!"},
+  {name:"게임경영학", depts:["경영학과","미디어기술콘텐츠학과","컴퓨터정보공학부"], emoji:"🎮", desc:"게임 비즈니스 모델 설계에 특화된 전문가!"},
+  {name:"뇌인지공학", depts:["바이오메디컬소프트웨어학과","심리학과","의생명과학과"], emoji:"🧠", desc:"인간의 뇌와 마음을 기술로 풀어내는 미래 공학자!"},
+  {name:"사회언론정보학", depts:["국어국문학과","사회학과","행정학과"], emoji:"📰", desc:"사회 현상을 분석하고 전달하는 저널리즘 전문가!"}
+  // 추가 전공 데이터를 여기에 넣으세요.
 ];
 
-// 셀렉트 박스 채우기
 ['sel1','sel2','sel3'].forEach(id=>{
   const sel=document.getElementById(id);
-  departments.forEach(d=>{const opt=document.createElement('option');opt.value=d;opt.textContent=d;sel.appendChild(opt);});
+  departments.sort().forEach(d=>{const opt=document.createElement('option');opt.value=d;opt.textContent=d;sel.appendChild(opt);});
 });
 
 function calculate(){
@@ -162,47 +148,61 @@ function calculate(){
   const v2=document.getElementById('sel2').value;
   const v3=document.getElementById('sel3').value;
 
-  if(!g || !v1||!v2||!v3){ alert('모든 정보를 선택해주세요!'); return; }
+  if(!g || !v1||!v2||!v3){ alert('모든 항목을 선택해주세요!'); return; }
   if(v1===v2||v2===v3||v1===v3){ alert('서로 다른 전공 3개를 선택해주세요!'); return; }
 
+  const selected=[v1,v2,v3];
+  let best=null;
+  let maxMatchRate = 0;
+
+  majors.forEach(m => {
+    // 1. 겹치는 학과 개수 계산
+    const overlap = selected.filter(s => m.depts.includes(s)).length;
+    // 2. 해당 전공의 전체 학과수 대비 매칭 비율 계산 (3/3=1.0, 3/4=0.75)
+    const matchRate = overlap / m.depts.length;
+
+    // 💡 [핵심 로직] 최소 2개 이상 겹치면서 매칭률이 가장 높은 전공을 찾음
+    if (overlap >= 2 && matchRate > maxMatchRate) {
+      maxMatchRate = matchRate;
+      best = m;
+    }
+  });
+
+  // 매칭률이 0.6(60%) 이상인 경우만 매칭 성공으로 인정
+  if (best && maxMatchRate >= 0.6) {
+    showResult(best, selected, g);
+  } else {
+    showResult(null, selected, g);
+  }
+}
+
+function showResult(major, selected, grade){
   document.getElementById('formSection').style.display='none';
   const resSection = document.getElementById('resultSection');
   const content = document.getElementById('resultContent');
-
-  const selected=[v1,v2,v3];
-  let best=null, bestScore=0;
-  majors.forEach(m=>{
-    const overlap=selected.filter(s=>m.depts.includes(s)).length;
-    if(overlap>=2 && overlap>bestScore){ bestScore=overlap; best=m; }
-  });
-
-  if(best){
-    content.innerHTML = `<div class="result-header"><span class="result-emoji">${best.emoji}</span><div class="result-name">${best.name}</div></div><div class="result-body"><p style="font-size:14px; line-height:1.6; color:#666;">${g}인 당신에게 딱 맞는 설계전공은 바로 이거!</p><br><p>${best.desc}</p></div>`;
-  } else {
-    content.innerHTML = `<div class="result-header"><span class="result-emoji">🚀</span><div class="result-name">새로운 전공 개척자</div></div><div class="result-body"><p style="font-size:14px; line-height:1.6; color:#666;">${g}인 당신, 이 조합은 최초예요!</p><br><p>선택하신 전공들의 조합은 아직 아무도 가지 않은 길입니다. 직접 전공을 설계해서 학교의 첫 주인공이 되어보세요!</p></div>`;
-  }
   
+  if(major){
+    content.innerHTML = `<div class="result-header"><span class="result-emoji">${major.emoji}</span><div class="result-tag" style="font-size:11px; color:#3d6ee8; font-weight:700; margin-bottom:5px;">✦ 추천 설계전공</div><div class="result-name">${major.name}</div></div><div class="result-body"><p style="color:#666; font-size:14px; line-height:1.6;">${grade}인 당신에게 딱 맞는 설계전공입니다!<br><br>${major.desc}</p></div>`;
+  } else {
+    content.innerHTML = `<div class="result-header"><span class="result-emoji">🚀</span><div class="result-name">새로운 전공 개척자</div></div><div class="result-body"><p style="color:#666; font-size:14px; line-height:1.6;">${grade} 당신의 조합은 최초예요!<br><br>선택하신 전공들의 조합은 아주 유니크합니다. 직접 나만의 설계전공을 만들어 학교의 첫 주인공이 되어보세요!</p></div>`;
+  }
   resSection.classList.add('show');
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
 function saveAsImage() {
-  const name = document.getElementById('userName').value;
+  const n = document.getElementById('userName').value;
   const id = document.getElementById('userId').value;
-  const dept = document.getElementById('userDept').value;
-
-  if(!name || !id || !dept) {
-    alert('이벤트 참여를 위해 이름, 학번, 학과를 모두 입력해주세요!');
-    return;
-  }
+  const d = document.getElementById('userDept').value;
+  if(!n || !id || !d) { alert('이벤트 응모를 위해 정보를 모두 입력해주세요!'); return; }
 
   const target = document.getElementById('captureArea');
   html2canvas(target, { backgroundColor: "#f0f4ff", scale: 2 }).then(canvas => {
     const link = document.createElement('a');
-    link.download = `설계전공_${name}_${id}.png`;
+    link.download = `설계전공_${n}_${id}.png`;
     link.href = canvas.toDataURL('image/png');
     link.click();
-    alert("이미지가 저장되었습니다! 이 이미지를 공지사항의 안내에 따라 제출하면 응모 완료 ✨");
+    alert("이미지가 저장되었습니다! ✨\n공지사항의 안내에 따라 이미지를 제출해주세요.");
   });
 }
 </script>
