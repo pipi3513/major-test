@@ -88,7 +88,7 @@
 </head>
 <body>
 <div class="wrap">
-
+ 
   <!-- STEP 1: 전공 선택 -->
   <div id="formSection">
     <div class="header">
@@ -116,7 +116,7 @@
     <p class="warning" id="warning"></p>
     <button class="btn" onclick="goToInfo()">✨ 내 설계전공 찾기</button>
   </div>
-
+ 
   <!-- STEP 2: 학생 정보 입력 -->
   <div class="info-section" id="infoSection">
     <div class="card">
@@ -141,24 +141,24 @@
       <button class="btn" onclick="submitAndShowResult()">결과 확인하기 🎓</button>
     </div>
   </div>
-
+ 
   <!-- STEP 3: 결과 -->
   <div class="result" id="resultSection">
     <div class="result-card" id="resultCard"></div>
     <div id="submitStatus" class="submit-status"></div>
     <button class="retry-btn" onclick="retry()">🔄 다시 해보기</button>
   </div>
-
+ 
 </div>
 <script>
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzEEcPT4__KE2ubRksutHm4Da8lWPChm1_vbpBa8SwvgKbRC0JJJnPq5F2YdjCxXSA/exec';
 const NOTICE_URL = '#';
 const HOME_URL = '#';
-
+ 
 const departments = ["AI의공학과","경영학과","경제학과","공간디자인·소비자학과","국사학과","국어국문학과","국제학부","데이터사이언스학과","물리학과","미디어기술콘텐츠학과","바이오로직스공학부","바이오메디컬소프트웨어학과","바이오메디컬화학공학과","법학과","사회복지학과","사회학과","생명공학과","수학과","식품영양학과","심리학과","아동학과","에너지환경공학과","영어영문학부","음악과","의류학과","의생명과학과","인공지능학과","일어일본문화학과","정보통신전자공학부","중국언어문화학과","철학과","컴퓨터정보공학부","특수교육과","프랑스어문화학과","행정학과","화학과","회계학과"];
 const deptMap = {"바메소":"바이오메디컬소프트웨어학과","바메화":"바이오메디컬화학공학과","의생명":"의생명과학과","심리":"심리학과","인공지능":"인공지능학과","데이터사이언스":"데이터사이언스학과","국문":"국어국문학과","사회":"사회학과","행정":"행정학과","미디어기술콘텐츠":"미디어기술콘텐츠학과","중국언어문화":"중국언어문화학과","공간디자인소비자":"공간디자인·소비자학과","음악":"음악과","의류":"의류학과","경영":"경영학과","에너지환경공학":"에너지환경공학과","화학":"화학과","생명공학":"생명공학과","식품영양":"식품영양학과","법학":"법학과","회계":"회계학과","국제학부":"국제학부","철학":"철학과","경제":"경제학과","컴정":"컴퓨터정보공학부","정통전자":"정보통신전자공학부","사회복지":"사회복지학과"};
 function res(n){return deptMap[n]||n;}
-
+ 
 const majors=[
   {name:"뇌인지공학",depts:["바메소","바메화","심리","의생명"].map(res),emoji:"🧠",desc:"뇌와 마음, 그리고 기술의 교차점에 서 있는 당신! 심리학부터 바이오메디컬까지, 인간을 과학으로 풀어내는 융합 전공이에요. 학생설계전공으로 직접 신청해보세요!"},
   {name:"의생명데이터사이언스",depts:["데이터사이언스","의생명","인공지능"].map(res),emoji:"🔬",desc:"생명과학에 데이터를 더하면? 바로 당신의 전공! 의생명과 AI가 만나는 최첨단 융합 분야예요. 학생설계전공으로 직접 신청해보세요!"},
@@ -198,19 +198,19 @@ const majors=[
   {name:"심리콘텐츠비즈니스학",depts:["경영","미디어기술콘텐츠","심리"].map(res),emoji:"💬",desc:"사람의 마음을 콘텐츠와 비즈니스로 연결하는 당신! 심리, 경영, 미디어를 아우르는 전공이에요. 학생설계전공으로 직접 신청해보세요!"},
   {name:"사회화합스토리텔링학",depts:["국문","미디어기술콘텐츠","사회복지"].map(res),emoji:"🤝",desc:"이야기로 사회를 따뜻하게 잇는 당신! 국문, 미디어, 사회복지를 융합한 전공이에요. 학생설계전공으로 직접 신청해보세요!"},
 ];
-
+ 
 let selectedMajors=[], calculatedResult=null;
-
+ 
 ['sel1','sel2','sel3'].forEach(id=>{
   const sel=document.getElementById(id);
   departments.forEach(d=>{const opt=document.createElement('option');opt.value=d;opt.textContent=d;sel.appendChild(opt);});
 });
-
+ 
 function updateProgress(){
   const filled=['sel1','sel2','sel3'].filter(id=>document.getElementById(id).value!=='').length;
   document.getElementById('progressFill').style.width=(filled/3*100)+'%';
 }
-
+ 
 function goToInfo(){
   const v1=document.getElementById('sel1').value, v2=document.getElementById('sel2').value, v3=document.getElementById('sel3').value;
   const warn=document.getElementById('warning');
@@ -223,7 +223,7 @@ function goToInfo(){
   document.getElementById('infoSection').classList.add('show');
   window.scrollTo({top:0,behavior:'smooth'});
 }
-
+ 
 function calcResult(selected){
   let candidates=[];
   majors.forEach(m=>{
@@ -236,7 +236,7 @@ function calcResult(selected){
   const top=candidates.filter(c=>c.ratio===topRatio);
   return top[Math.floor(Math.random()*top.length)].major;
 }
-
+ 
 function submitAndShowResult(){
   const name=document.getElementById('inputName').value.trim();
   const studentId=document.getElementById('inputStudentId').value.trim();
@@ -250,7 +250,7 @@ function submitAndShowResult(){
     .then(()=>document.getElementById('submitStatus').textContent='✅ 참여 완료! 추첨 결과를 기다려주세요 🎉')
     .catch(()=>document.getElementById('submitStatus').textContent='✅ 참여 완료! 추첨 결과를 기다려주세요 🎉');
 }
-
+ 
 function showResult(major,selected){
   const card=document.getElementById('resultCard');
   const links=`<a href="${NOTICE_URL}" target="_blank" style="display:block;text-decoration:none"><button class="btn link-btn">📋 학생설계전공 신청 안내 보기</button></a><a href="${HOME_URL}" target="_blank" style="display:block;text-decoration:none"><button class="btn link-btn2">🏫 학생설계전공 제도 소개 홈페이지</button></a>`;
@@ -263,7 +263,7 @@ function showResult(major,selected){
   document.getElementById('resultSection').classList.add('show');
   window.scrollTo({top:0,behavior:'smooth'});
 }
-
+ 
 function retry(){
   document.getElementById('formSection').style.display='block';
   document.getElementById('resultSection').classList.remove('show');
