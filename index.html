@@ -122,7 +122,7 @@
 <body>
 <div class="loading-overlay" id="loadingOverlay">
   <div class="loading-spinner"></div>
-  <div class="loading-text">결과 분석중... ✨</div>
+  <div class="loading-text">결과 분석중... 🔍</div>
   <div class="loading-sub">나만의 설계전공을 찾고 있어요!</div>
 </div>
 <div class="wrap">
@@ -315,7 +315,7 @@ function showResult(major,selected){
   if(major){
     card.innerHTML=`<div class="result-header matched"><span class="result-emoji">${major.emoji}</span><div class="result-tag matched">✦ 매칭된 설계전공</div><div class="result-name matched">${major.name}</div></div><div class="result-body"><p class="result-desc">${major.desc}</p><div class="selected-tags">${tags}</div>${links}</div>`;
   } else {
-    card.innerHTML=`<div class="result-header new-one"><span class="result-emoji">🚀</span><div class="result-tag new-one">✦ 새로운 조합 발견!</div><div class="result-name new-one">아직 없는 전공이에요!</div></div><div class="result-body"><p class="result-desc">이 조합으로 승인된 설계전공은 아직 없어요! 어쩌면 당신이 최초일지도? 🌟 지금까지 없던 지금까지 없던 나만의 전공 직접 만들어보는 건 어떨까요? 학생설계전공 신청으로 새 역사를 써봐요!</p><div class="selected-tags">${tags}</div>${links}</div>`;
+    card.innerHTML=`<div class="result-header new-one"><span class="result-emoji">🚀</span><div class="result-tag new-one">✦ 새로운 조합 발견!</div><div class="result-name new-one">아직 없는 전공이에요!</div></div><div class="result-body"><p class="result-desc">이 조합으로 승인된 설계전공은 아직 없어요! 어쩌면 당신이 최초일지도? 🌟 지금까지 없던 나만의 전공 직접 만들어보는 건 어떨까요? 학생설계전공 신청으로 새 역사를 써봐요!</p><div class="selected-tags">${tags}</div>${links}</div>`;
   }
   document.getElementById('resultSection').classList.add('show');
   window.scrollTo({top:0,behavior:'smooth'});
