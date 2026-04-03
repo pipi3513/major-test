@@ -80,6 +80,39 @@
   .retry-btn { width: 100%; padding: 15px; border-radius: 14px; background: var(--white); border: 1.5px solid var(--border); color: var(--text-muted); font-size: 14px; font-family: 'Jua', sans-serif; cursor: pointer; transition: all 0.2s; margin-top: 12px; }
   .retry-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
   .submit-status { text-align: center; font-size: 13px; color: var(--primary); margin-top: 10px; min-height: 20px; font-weight: 700; }
+
+  .loading-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(240,244,255,0.95);
+    z-index: 999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+  }
+  .loading-overlay.show { display: flex; }
+  .loading-spinner {
+    width: 64px; height: 64px;
+    border: 5px solid #dde3f8;
+    border-top-color: #3d6ee8;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 20px;
+  }
+  .loading-text {
+    font-family: 'Jua', sans-serif;
+    font-size: 20px;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+  .loading-sub {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes popIn { from { opacity: 0; transform: scale(0.93); } to { opacity: 1; transform: scale(1); } }
@@ -87,6 +120,11 @@
 </style>
 </head>
 <body>
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">결과 분석중... ✨</div>
+  <div class="loading-sub">나만의 설계전공을 찾고 있어요!</div>
+</div>
 <div class="wrap">
 
   <!-- STEP 1: 전공 선택 -->
@@ -124,7 +162,7 @@
       <div class="info-header">
         <span class="emoji">🎁</span>
         <h2>참여자 정보 입력</h2>
-        <p>참여자 중 추첨을 통해 커피 기프티콘을 드립니다!<br>아래 정보를 입력해주세요</p>
+        <p>참여자 중 추첨을 통해 기프티콘을 드립니다!<br>아래 정보를 입력해주세요</p>
       </div>
       <div class="input-group">
         <label class="input-label">이름</label>
@@ -132,14 +170,14 @@
       </div>
       <div class="input-group">
         <label class="input-label">학번</label>
-        <input type="text" id="inputStudentId" placeholder="학번을 입력하세요">
+        <input type="text" id="inputStudentId" placeholder="학번을 입력하세요 (9자리)" maxlength="9" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
       </div>
       <div class="input-group">
         <label class="input-label">소속학과</label>
         <input type="text" id="inputDept" placeholder="소속학과를 입력하세요">
       </div>
       <p class="warning" id="infoWarning"></p>
-      <button class="btn" onclick="submitAndShowResult()" style="background:linear-gradient(135deg,#1e3a6e,#2d5a9e);box-shadow:0 6px 24px rgba(30,58,110,0.28);">결과 확인하기 🎓</button>
+      <button id="submitBtn" class="btn" onclick="submitAndShowResult()" style="background:linear-gradient(135deg,#1e3a6e,#2d5a9e);box-shadow:0 6px 24px rgba(30,58,110,0.28);">결과 확인하기 🎓</button>
     </div>
   </div>
 
@@ -228,6 +266,10 @@ function goToInfo(){
 function backToForm(){
   document.getElementById('formSection').style.display='block';
   document.getElementById('infoSection').classList.remove('show');
+  document.getElementById('inputName').value='';
+  document.getElementById('inputStudentId').value='';
+  document.getElementById('inputDept').value='';
+  document.getElementById('infoWarning').classList.remove('show');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -245,14 +287,22 @@ function calcResult(selected){
 }
 
 function submitAndShowResult(){
+  const btn=document.getElementById('submitBtn');
+  if(btn.disabled) return;
   const name=document.getElementById('inputName').value.trim();
   const studentId=document.getElementById('inputStudentId').value.trim();
   const dept=document.getElementById('inputDept').value.trim();
   const warn=document.getElementById('infoWarning');
   if(!name||!studentId||!dept){warn.textContent='⚠️ 모든 항목을 입력해주세요!';warn.classList.add('show');return;}
+  if(studentId.length!==9){warn.textContent='⚠️ 학번은 9자리 숫자로 입력해주세요!';warn.classList.add('show');return;}
+  btn.disabled=true;
   warn.classList.remove('show');
   document.getElementById('infoSection').classList.remove('show');
-  showResult(calculatedResult, selectedMajors);
+  document.getElementById('loadingOverlay').classList.add('show');
+  setTimeout(()=>{
+    document.getElementById('loadingOverlay').classList.remove('show');
+    showResult(calculatedResult, selectedMajors);
+  }, 1500);
   fetch(SHEET_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({name,studentId,department:dept,major1:selectedMajors[0],major2:selectedMajors[1],major3:selectedMajors[2],result:calculatedResult?calculatedResult.name:'매칭없음'})})
     .then(()=>document.getElementById('submitStatus').textContent='✅ 참여 완료! 추첨 결과를 기다려주세요 🎉')
     .catch(()=>document.getElementById('submitStatus').textContent='✅ 참여 완료! 추첨 결과를 기다려주세요 🎉');
@@ -278,6 +328,9 @@ function retry(){
   ['sel1','sel2','sel3'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('progressFill').style.width='0%';
   document.getElementById('submitStatus').textContent='';
+  const submitBtn=document.getElementById('submitBtn');
+  if(submitBtn){submitBtn.disabled=false;submitBtn.textContent='결과 확인하기 🎓';}
+  document.getElementById('loadingOverlay').classList.remove('show');
   document.getElementById('inputName').value='';
   document.getElementById('inputStudentId').value='';
   document.getElementById('inputDept').value='';
